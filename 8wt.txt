@@ -1,0 +1,94 @@
+<html>
+  <body>
+    <form action="insert.php" method="post">
+      ISBN: <input type="text" name="ISBN" /> Title:
+      <input type="text" name="title" /> Authors:
+      <input type="text" name="authors" /> Edition:
+      <input type="text" name="edition" /> Publisher:
+      <input type="text" name="publisherl" />
+
+      <input type="submit" />
+    </form>
+    <form action="reults.php" method="post">
+      Search: <input type="text" name="search" />
+      <input type="submit" />
+    </form>
+  </body>
+</html>
+
+<html>
+<body>
+<?php
+    $con = mysqli_connect("localhost","root","") or die(mysql_error());
+    mysqli_select_db ($con, "cse") or die(mysql_error());
+    
+    $sql = "select * from Book where title = '$_POST[title]'";
+
+   if ($res = mysqli_query($con, $sql))  #$res is an object
+   {	
+         echo "Successfully connected to database";
+   }
+   else
+     {
+        die('Error: ' . mysqli_error());
+      }
+			
+    echo "<table border='1'>
+	<tr>
+	<th>ISBN</th>
+	<th>Title</th>
+	<th>Authors</th>
+	<th>Edition </th>
+                 <th>Publisher </th>
+	</tr>";
+   
+   while($row = mysqli_fetch_array($res))
+      {
+	  echo "<tr>";
+	  echo "<td>" . $row['ISBN'] . "</td>";
+	  echo "<td>" . $row['title'] . "</td>";
+    echo "<td>" . $row['authors'] . "</td>";
+	  echo "<td>" . $row['edition'] . "</td>";
+	  echo "<td>" . $row['publisher'] . "</td>";
+	  echo "</tr>";
+      }
+
+    echo "</table>";
+    mysqli_close($con);
+?> 
+</body>
+</html> 
+
+<html>
+<body>
+<?php
+   
+   $con = mysqli_connect("localhost","root","Oshkosh#Ankush") or die(mysql_error());
+   mysqli_select_db ($con, "cse") or die(mysql_error());
+
+
+   $sql="Insert into Book (ISBN,title, authors, edition,publisher) 	    
+             values ('$_POST[ISBN]','$_POST[title]','$_POST[authors]',
+                          '$_POST[edition]','$_POST[publisherl]')";
+
+   if (!mysqli_query($con,$sql))
+    {
+       die('Error: ' . mysql_error());
+    }
+
+   echo "1 record added";
+   mysqli_close($con)
+		
+   ?>
+		
+   <form action="reults.php" method="post">
+	Name: <input type="text" name="Title" />
+	<input type="submit" />
+   </form>
+ 
+</body>
+</html> 
+
+
+
+
